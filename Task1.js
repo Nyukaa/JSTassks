@@ -183,3 +183,48 @@ let chunk = function (arr, size) {
 let argumentsLength = function (...args) {
   return args.length;
 };
+/**
+ * @param {string} val
+ * @return {Object}
+ */
+//2704. To Be Or Not To Be
+//Когда код вызывает expect(5), внешняя функция завершается
+// и мгновенно возвращает объект. На этот объект следующий вызов
+// .toBe(5).
+// Closure: Ф toBe и notToBe находятся внутри expect. Они в памяти» значение val и помнят его,
+// когда сравнивают со своим аргументом otherVal.
+// (throw new Error): Если равенство нарушено,
+//  код не должен возвращать false. Конструкция throw new Error("...")
+let expect = function (val) {
+  return {
+    toBe(otherVal) {
+      if (val === otherVal) {
+        return true;
+      }
+      throw new Error("Not Equal");
+    },
+    notToBe(otherVal) {
+      if (val !== otherVal) {
+        return true;
+      }
+      throw new Error("Equal");
+    },
+  };
+};
+
+/**
+ * expect(5).toBe(5); // true
+ * expect(5).notToBe(5); // throws "Equal"
+ */
+let sortBy = function (arr, fn) {
+  return arr.sort((a, b) => fn(a) - fn(b));
+};
+// Ex 1:
+// Input: arr = [5, 4, 1, 2, 3], fn = (x) => x
+// Output: [1, 2, 3, 4, 5]
+// Ex 2:
+// Input: arr = [{"x": 1}, {"x": 0}, {"x": -1}], fn = (d) => d.x
+// Output: [{"x": -1}, {"x": 0}, {"x": 1}]
+// Ex 3:
+// Input: arr = [[3, 4], [5, 2], [10, 1]], fn = (x) => x[1]
+// Output: [[10, 1], [5, 2], [3, 4]]
