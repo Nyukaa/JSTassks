@@ -123,24 +123,63 @@ let createCounter2 = function (init) {
 
 //2666. Allow One Function Call
 let once = function (fn) {
+  // 1. Эти переменные создаются ВНУТРИ функции once
   let hasBeenCalled = false;
   let result;
 
+  // 2. Мы возвращаем новую внутреннюю функцию
   return function (...args) {
+    // 3. ЭТО И ЕСТЬ ЗАМЫКАНИЕ: внутренняя функция "помнит" и имеет
+    // доступ к переменным hasBeenCalled и result, хотя функция once
+    // уже давно выполнилась и завершила свою работу!
     if (!hasBeenCalled) {
       hasBeenCalled = true;
-      result = fn(...args); // вызываем оригинальную функцию с аргументами
+      result = fn(...args);
       return result;
     }
-
-    // Во все последующие разы функция ничего не возвращает,
-    // что в JavaScript автоматически означает return undefined;
   };
-};
 
+  // Во все последующие разы функция ничего не возвращает,
+  // что в JavaScript автоматически означает return undefined;
+};
 /**
  * let fn = (a,b,c) => (a + b + c)
  * let onceFn = once(fn)
  * onceFn(1,2,3); // 6
  * onceFn(2,3,6); // undefined, fn не вызывается
  */
+/**
+ * @param {Array} arr
+ * @param {number} size
+ * @return {Array}
+ */
+//2677. Chunk Array
+// let chunk = function (arr, size) {
+//   const outArr = [];
+//   let i = 0;
+//   while (i < arr.length) {
+//     const innerArr = [];
+
+//     for (let j = 0; j < size && i < arr.length; j++) {
+//       innerArr.push(arr[i]);
+//       i++;
+//     }
+//     outArr.push(innerArr);
+//   }
+//   return outArr;
+// };
+let chunk = function (arr, size) {
+  const chunkedArr = [];
+
+  // Шагаем по массиву с шагом, равным size
+  for (let i = 0; i < arr.length; i += size) {
+    // Отрезаем кусочек от i до i + size и сразу кладем в результирующий массив
+    chunkedArr.push(arr.slice(i, i + size));
+  }
+
+  return chunkedArr;
+};
+//2703. Return Length of Arguments Passed
+let argumentsLength = function (...args) {
+  return args.length;
+};
