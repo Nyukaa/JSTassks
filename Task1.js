@@ -228,3 +228,29 @@ let sortBy = function (arr, fn) {
 // Ex 3:
 // Input: arr = [[3, 4], [5, 2], [10, 1]], fn = (x) => x[1]
 // Output: [[10, 1], [5, 2], [3, 4]]
+//2725. Interval Cancellation
+let cancellable = function (fn, args, t) {
+  // 1. Вызываем функцию НЕМЕДЛЕННО (на 0-й миллисекунде)
+  fn(...args);
+
+  // 2. Запускаем интервал для последующих вызовов каждые t мс
+  const timerId = setInterval(() => {
+    fn(...args);
+  }, t);
+
+  // 3. Возвращаем функцию отмены (замыкание хранит timerId в памяти)
+  return function cancelFn() {
+    clearInterval(timerId);
+  };
+};
+//2727. Is Object Empty
+let isEmpty = function (obj) {
+  // Case 1: If it's an array, check its length property
+  if (Array.isArray(obj)) {
+    return obj.length === 0;
+  }
+
+  // Case 2: If it's an object, check if it has any keys
+  // Object.keys(obj) returns an array of the object's keys
+  return Object.keys(obj).length === 0;
+};
